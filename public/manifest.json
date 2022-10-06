@@ -3,7 +3,7 @@
   "short_name": "curbz",
   "theme_color": "#1c1b33",
   "background_color": "#1c1b33",
-  "display": "standalone",
+  "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
