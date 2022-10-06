@@ -27,7 +27,7 @@ export default function HomePage() {
         <MovingSpot depthBuffer={depthBuffer} color="white" position={[-3, 3, 2]} />
 
         <Globe />
-        <VideoText position={[0, -2, 2]} />
+        <VideoText position={[-0.2, -2, 2]} />
         <Reflector resolution={512} args={[100, 100]} mirror={0.5} mixBlur={6} mixStrength={1.5} rotation={[-Math.PI / 2, 0, Math.PI / 2]} position={[0, -3, 0]}>
           {(Material, props) => <Material color="#a0a0a0" metalness={2} {...props} />}
         </Reflector>
