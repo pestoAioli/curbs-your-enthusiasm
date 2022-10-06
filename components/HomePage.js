@@ -1,4 +1,4 @@
-import { Center, Cone, PresentationControls, Reflector, SpotLight, Text, useDepthBuffer, useTexture } from "@react-three/drei";
+import { Reflector, SpotLight, Text, Html, useDepthBuffer, useTexture } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react"
 import * as THREE from 'three';
@@ -25,7 +25,12 @@ export default function HomePage() {
     return (
       <>
         <MovingSpot depthBuffer={depthBuffer} color="white" position={[-3, 3, 2]} />
+        <Html scale={100} rotation={[Math.PI / 2, 0, 0]} position={[2, -2, -2]}>
+          <a style={{ position: 'absolute', zIndex: 10000 }} href="/navigation">Enter</a>
+          <div className="hort">
+          </div>
 
+        </Html>
         <Globe />
         <VideoText position={[-0.2, -2, 2]} />
         <Reflector resolution={512} args={[100, 100]} mirror={0.5} mixBlur={6} mixStrength={1.5} rotation={[-Math.PI / 2, 0, Math.PI / 2]} position={[0, -3, 0]}>
