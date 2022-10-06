@@ -71,7 +71,7 @@ export default function HomePage() {
     const [video] = useState(() => Object.assign(document.createElement('video'), { src: '/skate_vid.mp4', crossOrigin: 'Anonymous', loop: true, muted: true }));
     useEffect(() => void (video.play()), [video])
     return (
-      <Text font="/SFCompact.ttf" fontSize={2.2} letterSpacing={-0.06} {...props}>
+      <Text font="/SFCompact.ttf" fontSize={2} letterSpacing={-0.06} {...props}>
         curbs
         <meshBasicMaterial toneMapped={false}>
           <videoTexture attach="map" args={[video]} encoding={THREE.sRGBEncoding} />
