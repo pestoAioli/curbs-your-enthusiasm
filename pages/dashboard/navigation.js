@@ -1,8 +1,15 @@
 import DashboardLayout from './layout.js';
+import styles from '../../styles/Home.module.css';
+import dynamic from 'next/dynamic';
 
 export default function Navigation() {
+  const MapWithNoSSR = dynamic(() => import("../../components/Map.js"), {
+    ssr: false,
+  })
   return (
-    <h1 style={{ color: '#d4c0be' }}>Boobs!</h1>
+    <div className={styles.map}>
+      <MapWithNoSSR />
+    </div>
   )
 }
 
