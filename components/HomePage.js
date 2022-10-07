@@ -26,10 +26,9 @@ export default function HomePage() {
       <>
         <MovingSpot depthBuffer={depthBuffer} color="white" position={[-3, 3, 2]} />
         <Html scale={100} rotation={[Math.PI / 2, 0, 0]} position={[2, -2, -2]}>
-          <a style={{ position: 'absolute', zIndex: 10000 }} href="/navigation">Enter</a>
+          <a style={{ position: 'absolute', zIndex: 10000 }} href="/dashboard/navigation">Enter</a>
           <div className="hort">
           </div>
-
         </Html>
         <Globe />
         <VideoText position={[-0.2, -2, 2]} />
