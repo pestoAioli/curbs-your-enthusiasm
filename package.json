@@ -8,10 +8,12 @@
   "dependencies": {
     "@react-three/drei": "^9.34.0",
     "@react-three/fiber": "^8.8.9",
+    "leaflet": "^1.9.2",
     "next": "latest",
     "next-pwa": "5.5.4",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-leaflet": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "17.0.4",
