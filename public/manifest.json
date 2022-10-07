@@ -1,8 +1,8 @@
 {
   "name": "Curbs!!",
   "short_name": "curbz",
-  "theme_color": "#1c1b33",
-  "background_color": "#1c1b33",
+  "theme_color": "#0f0f0f",
+  "background_color": "#0f0f0f",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
