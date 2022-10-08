@@ -21,6 +21,4 @@ Navigation.getLayout = function getLayout(navigation) {
   )
 }
 
-export async function getStaticProps(context) {
 
-}
