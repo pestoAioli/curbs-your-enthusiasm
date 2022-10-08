@@ -6,6 +6,8 @@ import styles from '../styles/Home.module.css';
 import { useCallback, useEffect, useState } from "react";
 import L from 'leaflet';
 
+let circle;
+
 export default function Map() {
   const [map, setMap] = useState(null);
   const [position, setPosition] = useState(null);
@@ -31,6 +33,7 @@ export default function Map() {
           <p>This is exactly where you are, <br /> wanna add this spot?</p>
         </Popup>
       </Marker>
+
       <NewSpot map={map} setPosition={setPosition}></NewSpot>
     </MapContainer>
   )
@@ -44,6 +47,7 @@ function NewSpot({ map, setPosition }) {
         const copy = JSON.parse(JSON.stringify(e.latlng));
         return copy;
       })
+      map.removeLayer(circle);
     })
   })
   return (
@@ -58,8 +62,9 @@ function Locator() {
     map.locate().on("locationfound", (e) => {
       map.flyTo(e.latlng, map.getZoom());
       const radius = e.accuracy
-      const circle = L.circle(e.latlng, radius);
+      circle = L.circle(e.latlng, radius);
       circle.addTo(map);
+      console.log(map)
     })
   }, [map])
 
