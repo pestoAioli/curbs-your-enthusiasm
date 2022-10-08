@@ -8,6 +8,19 @@
   font-family: buttChunks;
 }
 
+.newspot{
+  z-index: 100000000;
+  pointer-events: all;
+  position: absolute;
+  bottom: 110px;
+  right: 20px;
+  padding: 15px 30px;
+  color: #d4c0be;
+  background-color: #0f0f0f;
+  border: 1px solid #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 3px 3px #0f0f0f;
+}
 @font-face {
   font-family: buttChunks;
   src: url('/animalden.ttf') format('truetype');
@@ -17,6 +30,35 @@
   .nav{
     font-size: x-small;
   }
+  .newspot{
+    bottom: 80px;
+  }
 }
 
+@media screen and (max-width: 250px) {
+  .nav{
+    font-size: x-small;
+  }
+  .newspot{
+    bottom: 90px;
+  }
+}
 
+.newspot:active {
+
+  box-shadow: none;
+  transform: translate(4px, 4px);
+  border: 1px solid #0f0f0f;
+  box-shadow: inset 0px 0px 5px #0f0f0f;
+  box-shadow:
+   0 0 20px #fff,
+-5px 0 30px #f0f,
+ 5px 0 30px #0ff;
+  outline: none;
+}
+
+.containertwo{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

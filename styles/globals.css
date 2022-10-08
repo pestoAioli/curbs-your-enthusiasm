@@ -74,6 +74,12 @@ html{
   height: 100%;
 }
 
+button:hover {
+  .leaflet-container {
+    pointer-events: none;
+  }
+ }
+
 @font-face {
   font-family: buttChunks;
   src: url('/animalden.ttf') format('truetype');

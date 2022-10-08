@@ -1,12 +1,14 @@
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
-import 'leaflet-defaulticon-compatibility'
-import { useEffect, useState } from "react";
+import 'leaflet-defaulticon-compatibility';
+import styles from '../styles/Home.module.css';
+import { useCallback, useEffect, useState } from "react";
 import L from 'leaflet';
 
 export default function Map() {
-
+  const [map, setMap] = useState(null);
+  const [position, setPosition] = useState(null);
 
   return (
     <MapContainer
@@ -16,28 +18,37 @@ export default function Map() {
       minZoom={10}
       scrollWheelZoom={true}
       zoomControl={false}
-      style={{ height: "100%", width: "100%", position: 'absolute' }}
+      className={styles.containertwo}
+      ref={setMap}
     >
       <Locator />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker
-        position={[51.505, -0.09]}
-        draggable={true}
-        animate={true}
-      >
+      <Marker position={position ? position : [48.7779, -56.4100]}>
         <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
+          <p>This is exactly where you are, <br /> wanna add this spot?</p>
         </Popup>
       </Marker>
+      <NewSpot map={map} setPosition={setPosition}></NewSpot>
     </MapContainer>
   )
 }
 
-function NewSpot() {
-  const [spot, addSpot] = useState([]);
+function NewSpot({ map, setPosition }) {
+
+  const onButtonPress = useCallback(() => {
+    map.locate().on("locationfound", (e) => {
+      setPosition(() => {
+        const copy = JSON.parse(JSON.stringify(e.latlng));
+        return copy;
+      })
+    })
+  })
+  return (
+    <button onClick={onButtonPress} className={styles.newspot}>+</button>
+  )
 }
 
 function Locator() {
