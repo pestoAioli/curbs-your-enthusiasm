@@ -8,7 +8,7 @@ import L from 'leaflet';
 
 let circle;
 
-export default function Map() {
+export default function Map({ spots }) {
   const [map, setMap] = useState(null);
   const [position, setPosition] = useState(null);
 
@@ -20,7 +20,7 @@ export default function Map() {
       center={[51, -0.09]}
       zoom={13}
       maxZoom={24}
-      minZoom={10}
+      minZoom={5}
       scrollWheelZoom={true}
       zoomControl={false}
       className={styles.containertwo}
@@ -82,7 +82,7 @@ function Locator() {
       const radius = e.accuracy
       circle = L.circle(e.latlng, radius);
       circle.addTo(map);
-      console.log(map)
+
     })
   }, [map])
 
