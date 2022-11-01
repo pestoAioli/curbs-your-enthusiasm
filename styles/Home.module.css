@@ -14,7 +14,7 @@
   position: absolute;
   bottom: 110px;
   right: 20px;
-  padding: 15px 30px;
+  padding: 7.5px 15px;
   color: #d4c0be;
   background-color: #0f0f0f;
   border: 1px solid #1e1e1e;
@@ -24,24 +24,6 @@
 @font-face {
   font-family: buttChunks;
   src: url('/animalden.ttf') format('truetype');
-}
-
-@media screen and (max-width: 600px) {
-  .nav{
-    font-size: x-small;
-  }
-  .newspot{
-    bottom: 80px;
-  }
-}
-
-@media screen and (max-width: 250px) {
-  .nav{
-    font-size: x-small;
-  }
-  .newspot{
-    bottom: 90px;
-  }
 }
 
 .newspot:active {
@@ -61,4 +43,33 @@
   height: 100%;
   width: 100%;
   position: absolute;
+}
+
+.loader {
+  position: absolute;
+  z-index: 300000;
+  right: 20px;
+  bottom: 158px;
+  line-height: 85%;
+}
+
+@media screen and (max-width: 600px) {
+.nav {
+    font-size: x-small;
+  }
+  .newspot {
+    bottom: 80px;
+  }
+  .loader{
+    bottom: 135px;
+  }
+}
+
+@media screen and (max-width: 250px){
+.nav {
+    font-size: x-small
+  }
+  .newspot {
+    bottom: 90px;
+  }
 }

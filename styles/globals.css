@@ -88,3 +88,7 @@ to {
   opacity: 0.8;
 }
 }
+
+ .leaflet-popup-content p {
+    margin: 0;
+}

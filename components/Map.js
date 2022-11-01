@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
 import 'leaflet-defaulticon-compatibility';
 import styles from '../styles/Home.module.css';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import L from 'leaflet';
 
 let circle;
@@ -12,6 +12,9 @@ export default function Map({ spots }) {
   const [map, setMap] = useState(null);
   const [position, setPosition] = useState(null);
 
+  const noMasMarker = () => {
+    setPosition(() => null);
+  }
   return (
     <MapContainer
       center={[51, -0.09]}
@@ -28,26 +31,31 @@ export default function Map({ spots }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {position ? (
+      {position && (
         <Marker position={position}>
           <Popup>
             <p>This is exactly where you are, <br /> wanna add this spot?</p>
+            <div style={{ display: 'flex', justifyContent: 'space-around', cursor: 'pointer' }}>
+              <p style={{ fontSize: '50px', margin: '0' }}>🫡</p>
+              <p onClick={noMasMarker} style={{ fontSize: '50px', margin: '0' }}>🙅</p>
+            </div>
           </Popup>
-        </Marker>) : null
-      }
-      {spots.map((spot, i) => (
-        <Marker position={[spot.lat, spot.lon]}>
         </Marker>
-      ))}
-      <NewSpot map={map} setPosition={setPosition}></NewSpot>
+      )}
+      <NewSpot map={map} setPosition={setPosition} ></NewSpot>
     </MapContainer>
   )
 }
 
-function NewSpot({ map, setPosition }) {
+function NewSpot({ map, setPosition, position }) {
+  const [loading, setLoading] = useState(false);
+  const loadingRef = useRef(loading);
+  loadingRef.current = loading;
 
   const onButtonPress = useCallback(() => {
+    setLoading(() => true);
     map.locate().on("locationfound", (e) => {
+      setLoading(() => false);
       setPosition(() => {
         const copy = JSON.parse(JSON.stringify(e.latlng));
         return copy;
@@ -56,7 +64,12 @@ function NewSpot({ map, setPosition }) {
     })
   })
   return (
-    <button onClick={onButtonPress} className={styles.newspot}>+</button>
+    <>
+      {loading && (
+        <h1 className={styles.loader}>As <br /> you wish...</h1>
+      )}
+      <button onClick={onButtonPress} className={styles.newspot}>Add a Spot<br /> where You <br /> currently are</button>
+    </>
   )
 }
 
