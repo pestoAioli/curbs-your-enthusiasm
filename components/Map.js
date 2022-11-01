@@ -8,7 +8,7 @@ import L from 'leaflet';
 
 let circle;
 
-export default function Map() {
+export default function Map({ spots }) {
   const [map, setMap] = useState(null);
   const [position, setPosition] = useState(null);
 
@@ -17,7 +17,7 @@ export default function Map() {
       center={[51, -0.09]}
       zoom={13}
       maxZoom={24}
-      minZoom={10}
+      minZoom={5}
       scrollWheelZoom={true}
       zoomControl={false}
       className={styles.containertwo}
@@ -28,12 +28,17 @@ export default function Map() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position ? position : [48.7779, -56.4100]}>
-        <Popup>
-          <p>This is exactly where you are, <br /> wanna add this spot?</p>
-        </Popup>
-      </Marker>
-
+      {position ? (
+        <Marker position={position}>
+          <Popup>
+            <p>This is exactly where you are, <br /> wanna add this spot?</p>
+          </Popup>
+        </Marker>) : null
+      }
+      {spots.map((spot, i) => (
+        <Marker position={[spot.lat, spot.lon]}>
+        </Marker>
+      ))}
       <NewSpot map={map} setPosition={setPosition}></NewSpot>
     </MapContainer>
   )
@@ -64,7 +69,7 @@ function Locator() {
       const radius = e.accuracy
       circle = L.circle(e.latlng, radius);
       circle.addTo(map);
-      console.log(map)
+
     })
   }, [map])
 
