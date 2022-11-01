@@ -10,10 +10,18 @@ let circle;
 
 export default function Map({ spots }) {
   const [map, setMap] = useState(null);
+  const [allSpots, setAllSpots] = useState(spots);
   const [position, setPosition] = useState(null);
+  const [addingASpot, setAddingASpot] = useState(false);
 
   const noMasMarker = () => {
     setPosition(() => null);
+  }
+
+  const addMe = () => {
+    console.log(spots, 'boobs', map, 'p', position);
+    setAddingASpot(() => true);
+
   }
   return (
     <MapContainer
@@ -32,22 +40,29 @@ export default function Map({ spots }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {position && (
-        <Marker position={position}>
-          <Popup>
+        <Marker position={position} >
+          <Popup open>
             <p>This is exactly where you are, <br /> wanna add this spot?</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', cursor: 'pointer' }}>
-              <p style={{ fontSize: '50px', margin: '0' }}>🫡</p>
+              <p onClick={addMe} style={{ fontSize: '50px', margin: '0' }}>🫡</p>
               <p onClick={noMasMarker} style={{ fontSize: '50px', margin: '0' }}>🙅</p>
             </div>
           </Popup>
         </Marker>
+      )}
+      {allSpots.map((spot) =>
+        <Marker position={[spot.lat, spot.lon]}>
+        </Marker>
+      )}
+      {addingASpot && (
+        <FormForSubmittingASpot position={position} />
       )}
       <NewSpot map={map} setPosition={setPosition} ></NewSpot>
     </MapContainer>
   )
 }
 
-function NewSpot({ map, setPosition, position }) {
+function NewSpot({ map, setPosition }) {
   const [loading, setLoading] = useState(false);
   const loadingRef = useRef(loading);
   loadingRef.current = loading;
@@ -58,6 +73,7 @@ function NewSpot({ map, setPosition, position }) {
       setLoading(() => false);
       setPosition(() => {
         const copy = JSON.parse(JSON.stringify(e.latlng));
+        console.log(copy)
         return copy;
       })
       map.removeLayer(circle);
@@ -87,4 +103,19 @@ function Locator() {
   }, [map])
 
   return null
+}
+
+function FormForSubmittingASpot({ position }) {
+  return (
+    <form action="/api/hello" method="post" style={{ position: 'absolute', zIndex: '400000' }}>
+      <label htmlFor="name">Name da spot foo</label>
+      <input type="text" id="name" name="name" required />
+
+      <label htmlFor="description">Description</label>
+      <input type="text" id="description" name="description" required />
+      <input type='hidden' id="lat" name="lat" value={`${position.lat}`} required />
+      <input type='hidden' id="lng" name="lng" value={`${position.lng}`} required />
+      <button type="submit">Submit</button>
+    </form>
+  )
 }

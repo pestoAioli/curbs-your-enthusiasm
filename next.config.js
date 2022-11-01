@@ -8,14 +8,7 @@ module.exports = withPWA({
     runtimeCaching,
   },
   concurrentFeatures: true,
-  experimental: {
-    swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        }
-      ]
-    ]
-  }
+  plugins: [
+    'next-superjson'
+  ]
 })
