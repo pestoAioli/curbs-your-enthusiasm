@@ -21,7 +21,7 @@ export default function Map({ spots }) {
   const addMe = () => {
     console.log(spots, 'boobs', map, 'p', position);
     setAddingASpot(() => true);
-
+    map.closePopup();
   }
   return (
     <MapContainer
@@ -41,7 +41,7 @@ export default function Map({ spots }) {
       />
       {position && (
         <Marker position={position} >
-          <Popup open>
+          <Popup>
             <p>This is exactly where you are, <br /> wanna add this spot?</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', cursor: 'pointer' }}>
               <p onClick={addMe} style={{ fontSize: '50px', margin: '0' }}>🫡</p>
@@ -57,7 +57,9 @@ export default function Map({ spots }) {
       {addingASpot && (
         <FormForSubmittingASpot position={position} />
       )}
-      <NewSpot map={map} setPosition={setPosition} ></NewSpot>
+      {!addingASpot && (
+        <NewSpot map={map} setPosition={setPosition} ></NewSpot>
+      )}
     </MapContainer>
   )
 }
@@ -107,10 +109,9 @@ function Locator() {
 
 function FormForSubmittingASpot({ position }) {
   return (
-    <form action="/api/hello" method="post" style={{ position: 'absolute', zIndex: '400000' }}>
+    <form className={styles.formForNewSpot} action="/api/hello" method="post" >
       <label htmlFor="name">Name da spot foo</label>
       <input type="text" id="name" name="name" required />
-
       <label htmlFor="description">Description</label>
       <input type="text" id="description" name="description" required />
       <input type='hidden' id="lat" name="lat" value={`${position.lat}`} required />

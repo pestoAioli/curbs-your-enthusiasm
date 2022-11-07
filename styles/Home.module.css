@@ -52,6 +52,28 @@
   bottom: 158px;
   line-height: 85%;
 }
+.formForNewSpot {
+  position: absolute; 
+  padding: 16px;
+  z-index: 900000;
+  right: 15px;
+  bottom: 100px;
+  border-radius: 8px;
+  background-color: #f090f580;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0px 0px 5px #0f0f0f;
+  box-shadow:
+   0 0 20px #fff,
+-5px 0 30px #f0f,
+ 5px 0 30px #0ff;
+}
+@media screen and (min-width: 600px) {
+.formForNewSpot{
+    right: 120px;
+    bottom: 180px;
+  }
+}
 
 @media screen and (max-width: 600px) {
 .nav {
