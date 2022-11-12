@@ -1,7 +1,7 @@
 import DashboardLayout from './layout.js';
 import styles from '../../styles/Home.module.css';
 import dynamic from 'next/dynamic';
-import prisma from '../../utils/db.js'
+import prisma from '../../prisma/prisma.js'
 
 
 export default function Navigation({ spots }) {
@@ -25,6 +25,7 @@ Navigation.getLayout = function getLayout(navigation) {
 }
 
 export async function getServerSideProps() {
-  const spots = await prisma.spots.findMany();
-  return { props: { spots: JSON.parse(JSON.stringify(spots)) } };
+  const spots = await prisma.Spot.findMany();
+  console.log(spots)
+  return { props: { spots } };
 }
