@@ -13,7 +13,28 @@ export default function Map({ spots }) {
   const [allSpots, setAllSpots] = useState(spots);
   const [position, setPosition] = useState(null);
   const [addingASpot, setAddingASpot] = useState(false);
+  const [removingASpot, setRemovingASpot] = useState(false);
 
+  useEffect(() => {
+    if (addingASpot || removingASpot || !removingASpot) {
+      refresh();
+    }
+    return () => console.log('unmounting')
+  }, [addingASpot, removingASpot]);
+
+  async function refresh() {
+    const endpoint = '/api/hello'
+    const options = {
+      method: 'GET',
+    }
+    const refresh = await fetch(endpoint, options);
+    const res = await refresh.json();
+    console.log(res, 'reds');
+    console.log(allSpots, 'reds 2');
+    setAllSpots(() => res);
+  };
+
+  console.log(allSpots, 'spit')
   const noMasMarker = () => {
     setPosition(() => null);
   }
@@ -51,11 +72,16 @@ export default function Map({ spots }) {
         </Marker>
       )}
       {allSpots.map((spot) =>
-        <Marker position={[spot.lat, spot.lon]}>
+        <Marker position={[Number(spot.lat), Number(spot.lon)]}>
+          <Popup>
+            <h1>{spot.name}</h1>
+            <p>{spot.description}</p>
+            <RemoveThisSpot spot={spot} map={map} setRemovingASpot={setRemovingASpot} />
+          </Popup>
         </Marker>
       )}
       {addingASpot && (
-        <FormForSubmittingASpot position={position} />
+        <FormForSubmittingASpot position={position} setAddingASpot={setAddingASpot} />
       )}
       {!addingASpot && (
         <NewSpot map={map} setPosition={setPosition} ></NewSpot>
@@ -107,16 +133,82 @@ function Locator() {
   return null
 }
 
-function FormForSubmittingASpot({ position }) {
+function FormForSubmittingASpot({ position, setAddingASpot, refresh }) {
+  const addANewSpotToTheMap = async (e) => {
+    e.preventDefault()
+
+    // Get data from the form.
+    const data = {
+      name: e.target.name.value,
+      description: e.target.description.value,
+      imagePath: e.target.imagePath.value,
+      lat: e.target.lat.value,
+      lon: e.target.lon.value
+    }
+    console.log(data);
+    // Send the data to the server in JSON format.
+    const JSONdata = JSON.stringify(data)
+
+    // API endpoint where we send form data.
+    const endpoint = '/api/hello'
+
+    // Form the request for sending data to the server.
+    const options = {
+      // The method is POST because we are sending data.
+      method: 'POST',
+      // Tell the server we're sending JSON.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Body of the request is the JSON data we created above.
+      body: JSONdata,
+    }
+
+    // Send the form data to our forms API on Vercel and get a response.
+    const response = await fetch(endpoint, options)
+
+    // Get the response data from server as JSON.
+    // If server returns the name submitted, that means the form works.
+    const result = await response.json();
+    console.log(result.data);
+    setAddingASpot(() => false);
+  }
+
   return (
-    <form className={styles.formForNewSpot} action="/api/hello" method="post" >
+    <form className={styles.formForNewSpot} onSubmit={addANewSpotToTheMap} method="post" >
       <label htmlFor="name">Name da spot foo</label>
       <input type="text" id="name" name="name" required />
       <label htmlFor="description">Description</label>
       <input type="text" id="description" name="description" required />
-      <input type='hidden' id="lat" name="lat" value={`${position.lat}`} required />
-      <input type='hidden' id="lng" name="lng" value={`${position.lng}`} required />
+      <label htmlFor="imagePath">Add a photo</label>
+      <input type="text" id="imagePath" name="imagePath" required />
+      <input type='hidden' id="lat" name="lat" value={`${position.lat.toString()}`} required />
+      <input type='hidden' id="lon" name="lon" value={`${position.lng.toString()}`} required />
       <button type="submit">Submit</button>
     </form>
+  )
+}
+
+function RemoveThisSpot({ spot, map, setRemovingASpot }) {
+  const spotBeGone = async () => {
+    const JSONdata = JSON.stringify(spot);
+    const endpoint = '/api/hello';
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSONdata
+    }
+    console.log(spot, 'helo');
+    const byeBye = await fetch(endpoint, options);
+    const result = await byeBye.json();
+    console.log(result);
+    map.closePopup();
+    return setRemovingASpot((prev) => !prev);
+  }
+
+  return (
+    <button onClick={spotBeGone} style={{ padding: '12px', backgroundColor: '#e34d4d', borderRadius: '12px' }}>Delete</button>
   )
 }

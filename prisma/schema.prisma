@@ -3,16 +3,24 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model spots {
-  id          Int      @id @default(autoincrement())
-  username    String?  @db.VarChar(255)
-  description String?  @db.VarChar(255)
-  image_path  String   @db.VarChar(255)
-  lat         Decimal  @db.Decimal
-  lon         Decimal  @db.Decimal
-  created_on  DateTime @db.Timestamp(6)
+model Spot {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique
+  description String
+  imagePath   String
+  lat         String
+  lon         String
+  author      User?   @relation(fields: [authorId], references: [id])
+  authorId    String? @db.ObjectId
+}
+
+model User {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  email String  @unique
+  name  String?
+  spots Spot[]
 }
