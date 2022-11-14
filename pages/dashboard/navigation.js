@@ -2,10 +2,9 @@ import DashboardLayout from './layout.js';
 import styles from '../../styles/Home.module.css';
 import dynamic from 'next/dynamic';
 import prisma from '../../prisma/prisma.js'
-import { createContext, useState } from 'react';
 
-export default function Navigation({ spots, setView }) {
-  const [view, setView] = useState();
+export default function Navigation({ spots }) {
+
   const MapWithNoSSR = dynamic(() => import("../../components/Map.js"), {
     ssr: false,
   })

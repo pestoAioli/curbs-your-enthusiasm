@@ -133,7 +133,7 @@ function Locator() {
   return null
 }
 
-function FormForSubmittingASpot({ position, setAddingASpot, refresh }) {
+function FormForSubmittingASpot({ position, setAddingASpot }) {
   const addANewSpotToTheMap = async (e) => {
     e.preventDefault()
 
@@ -181,7 +181,7 @@ function FormForSubmittingASpot({ position, setAddingASpot, refresh }) {
       <label htmlFor="description">Description</label>
       <input type="text" id="description" name="description" required />
       <label htmlFor="imagePath">Add a photo</label>
-      <input type="text" id="imagePath" name="imagePath" required />
+      <input type="file" id="imagePath" name="imagePath" accept="image/png, image/jpeg" required />
       <input type='hidden' id="lat" name="lat" value={`${position.lat.toString()}`} required />
       <input type='hidden' id="lon" name="lon" value={`${position.lng.toString()}`} required />
       <button type="submit">Submit</button>
