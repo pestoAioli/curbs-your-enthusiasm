@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css';
 import { useCallback, useEffect, useRef, useState } from "react";
 import L from 'leaflet';
 
+
 let circle;
 
 export default function Map({ spots }) {
@@ -72,11 +73,20 @@ export default function Map({ spots }) {
         </Marker>
       )}
       {allSpots.map((spot) =>
-        <Marker position={[Number(spot.lat), Number(spot.lon)]}>
+        <Marker key={spot.id} position={[Number(spot.lat), Number(spot.lon)]}>
           <Popup>
             <h1>{spot.name}</h1>
             <p>{spot.description}</p>
-            <RemoveThisSpot spot={spot} map={map} setRemovingASpot={setRemovingASpot} />
+            <img src={spot.imagePath} style={{ objectFit: 'contain', width: '100%' }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 10 }}>
+              <a style={{
+                padding: '6px', backgroundColor: '#3264a8', borderRadius: '12px', borderWidth: '2px',
+                borderColor: 'buttonborder', borderStyle: 'outset', color: 'whitesmoke'
+              }}
+                href={`https://maps.google.com/?q=${spot.lat},${spot.lon}`}
+              >Directions</a>
+              <RemoveThisSpot spot={spot} map={map} setRemovingASpot={setRemovingASpot} />
+            </div>
           </Popup>
         </Marker>
       )}
@@ -133,15 +143,26 @@ function Locator() {
   return null
 }
 
-function FormForSubmittingASpot({ position, setAddingASpot, refresh }) {
+
+function FormForSubmittingASpot({ position, setAddingASpot }) {
   const addANewSpotToTheMap = async (e) => {
     e.preventDefault()
-
+    const formData = new FormData();
+    const file = document.querySelector("[type=file]").files[0];
+    console.log(file);
+    formData.append("file", file);
+    formData.append("upload_preset", process.env.UPLOAD_PRESET);
+    const imageResponse = await fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const imageResult = await imageResponse.json();
+    const actualImagePath = imageResult.secure_url;
     // Get data from the form.
     const data = {
       name: e.target.name.value,
       description: e.target.description.value,
-      imagePath: e.target.imagePath.value,
+      imagePath: actualImagePath,
       lat: e.target.lat.value,
       lon: e.target.lon.value
     }
@@ -175,13 +196,13 @@ function FormForSubmittingASpot({ position, setAddingASpot, refresh }) {
   }
 
   return (
-    <form className={styles.formForNewSpot} onSubmit={addANewSpotToTheMap} method="post" >
+    <form className={styles.formForNewSpot} onSubmit={addANewSpotToTheMap} method="post" encType="multipart/form-data" >
       <label htmlFor="name">Name da spot foo</label>
       <input type="text" id="name" name="name" required />
       <label htmlFor="description">Description</label>
       <input type="text" id="description" name="description" required />
       <label htmlFor="imagePath">Add a photo</label>
-      <input type="text" id="imagePath" name="imagePath" required />
+      <input type="file" id="imagePath" name="imagePath" accept="image/png, image/jpeg" required />
       <input type='hidden' id="lat" name="lat" value={`${position.lat.toString()}`} required />
       <input type='hidden' id="lon" name="lon" value={`${position.lng.toString()}`} required />
       <button type="submit">Submit</button>
@@ -209,6 +230,6 @@ function RemoveThisSpot({ spot, map, setRemovingASpot }) {
   }
 
   return (
-    <button onClick={spotBeGone} style={{ padding: '12px', backgroundColor: '#e34d4d', borderRadius: '12px' }}>Delete</button>
+    <button onClick={spotBeGone} style={{ padding: '12px', backgroundColor: '#e34d4d', borderRadius: '12px', cursor: 'pointer' }}>Delete</button>
   )
 }

@@ -2,8 +2,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../prisma/prisma';
 
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const spotData = req.body;
+  console.log(req.body)
   switch (req.method) {
     case 'GET':
       try {
