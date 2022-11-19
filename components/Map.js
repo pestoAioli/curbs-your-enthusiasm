@@ -151,8 +151,8 @@ function FormForSubmittingASpot({ position, setAddingASpot }) {
     const file = document.querySelector("[type=file]").files[0];
     console.log(file);
     formData.append("file", file);
-    formData.append("upload_preset", process.env.UPLOAD_PRESET);
-    const imageResponse = await fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`, {
+    formData.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET);
+    const imageResponse = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`, {
       method: 'POST',
       body: formData
     });
