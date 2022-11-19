@@ -12,9 +12,15 @@ export default function ListOfSpots({ spots }) {
             <div>
               <h1>{spot.name}</h1>
               <p>{spot.description}</p>
+              <a style={{
+                padding: '6px', backgroundColor: '#3264a8', borderRadius: '12px', borderWidth: '2px',
+                borderColor: 'buttonborder', borderStyle: 'outset', color: 'whitesmoke'
+              }}
+                href={`https://maps.google.com/?q=${spot.lat},${spot.lon}`}
+              >Directions</a>
             </div>
             <div>
-              <p>{spot.imagePath}</p>
+              <img src={spot.imagePath} className={styles.pikture} />
             </div>
           </div>
         ))
