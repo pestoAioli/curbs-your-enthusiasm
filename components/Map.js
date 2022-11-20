@@ -49,7 +49,6 @@ export default function Map({ spots }) {
   }
 
   const addAnywhere = () => {
-    alert('doubleclick anywhere to add a spot :D')
     console.log(map);
     setAddingRandom(() => true);
     map.doubleClickZoom.disable();
