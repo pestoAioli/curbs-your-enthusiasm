@@ -11,6 +11,7 @@
 .newspot{
   z-index: 100000000;
   pointer-events: all;
+  font-size: x-large;
   position: absolute;
   bottom: 110px;
   right: 20px;
@@ -25,12 +26,12 @@
 .otherspot{
   z-index: 100000000;
   pointer-events: all;
+  font-size: x-large;
   position: absolute;
   bottom: 110px;
-  right: 150px;
+  right: 100px;
   padding: 7.5px 15px;
-  color: whitesmoke;
-  background-color: #0f0f0f;
+  background-color: whitesmoke;
   border: 1px solid #1e1e1e;
   border-radius: 8px;
   box-shadow: 3px 3px #0f0f0f;
@@ -86,18 +87,26 @@
 .lust {
   display: flex; 
   justify-content: space-between;
-  background-color: #d4c0be;
+  background-color: whitesmoke;
   margin-left: 32px;
   margin-right: 32px;
   border-radius: 6px;
+  overflow: scroll;
 }
 .pikture {
   object-fit: contain; 
-  width: 45vw;
+  width: 30vw;
   display: flex; 
   align-items: center;
 }
 
+.namen {
+  font-family: buttChunks;
+}
+
+.descy {
+  font-size: x-large;
+}
 @media screen and (min-width: 600px) {
 .formForNewSpot{
     right: 120px;
@@ -112,9 +121,19 @@
   .newspot {
     bottom: 80px;
   }
+  .otherspot {
+    bottom: 80px;
+  }
   .loader{
     bottom: 135px;
   }
+  .namen {
+    font-size: medium;
+  }
+
+.descy {
+  font-size: medium;
+}
 }
 
 @media screen and (max-width: 250px){
@@ -122,6 +141,9 @@
     font-size: x-small
   }
   .newspot {
+    bottom: 90px;
+  }
+  .otherspot {
     bottom: 90px;
   }
 }
