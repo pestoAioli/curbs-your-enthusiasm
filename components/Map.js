@@ -15,6 +15,8 @@ export default function Map({ spots }) {
   const [position, setPosition] = useState(null);
   const [addingASpot, setAddingASpot] = useState(false);
   const [removingASpot, setRemovingASpot] = useState(false);
+  const [addingRandom, setAddingRandom] = useState(false);
+  document.body.style.overflow = 'hidden';
 
   useEffect(() => {
     if (addingASpot || removingASpot || !removingASpot) {
@@ -45,6 +47,20 @@ export default function Map({ spots }) {
     setAddingASpot(() => true);
     map.closePopup();
   }
+
+  const addAnywhere = () => {
+    alert('doubleclick anywhere to add a spot :D')
+    console.log(map);
+    setAddingRandom(() => true);
+    map.doubleClickZoom.disable();
+  }
+
+  const dontAddAnywhere = () => {
+    console.log(map);
+    setAddingRandom(() => false);
+    map.doubleClickZoom.enable();
+  }
+
   return (
     <MapContainer
       center={[51, -0.09]}
@@ -96,6 +112,12 @@ export default function Map({ spots }) {
       {!addingASpot && (
         <NewSpot map={map} setPosition={setPosition} ></NewSpot>
       )}
+      {!addingASpot && (
+        <button onClick={addingRandom ? dontAddAnywhere : addAnywhere} className={styles.otherspot}>{addingRandom ? '➖' : '➕'}</button>
+      )}
+      {addingRandom && (
+        <ForAddingSpotWherever setPosition={setPosition} setAddingRandom={setAddingRandom} />
+      )}
     </MapContainer>
   )
 }
@@ -122,7 +144,7 @@ function NewSpot({ map, setPosition }) {
       {loading && (
         <h1 className={styles.loader}>As <br /> you wish...</h1>
       )}
-      <button onClick={onButtonPress} className={styles.newspot}>Add a Spot<br /> where You <br /> currently are</button>
+      <button onClick={onButtonPress} className={styles.newspot}>📍</button>
     </>
   )
 }
@@ -232,4 +254,14 @@ function RemoveThisSpot({ spot, map, setRemovingASpot }) {
   return (
     <button onClick={spotBeGone} style={{ padding: '12px', backgroundColor: '#e34d4d', borderRadius: '12px', cursor: 'pointer' }}>Delete</button>
   )
+}
+
+function ForAddingSpotWherever({ setPosition, setAddingRandom }) {
+  const map = useMapEvents({
+    dblclick: (e) => {
+      console.log(e);
+      setPosition(() => e.latlng);
+    },
+  })
+  return null;
 }
