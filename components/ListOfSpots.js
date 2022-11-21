@@ -18,7 +18,7 @@ export default function ListOfSpots({ spots }) {
                 <h1 className={styles.namen}>{spot.name}</h1>
                 <p className={styles.descy} >{spot.description}</p>
                 <a style={{
-                  padding: '6px', backgroundColor: '#3264a8', borderRadius: '12px', borderWidth: '2px',
+                  padding: '6px', backgroundColor: '#0f0f0f', borderRadius: '12px', borderWidth: '2px',
                   borderColor: 'buttonborder', borderStyle: 'outset', color: 'whitesmoke'
                 }}
                   href={`https://maps.google.com/?q=${spot.lat},${spot.lon}`}

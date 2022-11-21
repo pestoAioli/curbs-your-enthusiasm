@@ -2,11 +2,13 @@ import DashboardLayout from './layout.js';
 import styles from '../../styles/Home.module.css';
 import dynamic from 'next/dynamic';
 import prisma from '../../prisma/prisma.js'
+import HoldUp from '../../components/HoldUp.js'
 
 export default function Navigation({ spots }) {
 
   const MapWithNoSSR = dynamic(() => import("../../components/Map.js"), {
     ssr: false,
+    loading: () => <HoldUp />,
   })
 
   return (

@@ -105,6 +105,8 @@
 
 .descy {
   font-size: x-large;
+  border-radius: 6px;
+  padding-left: 2px;
 }
 @media screen and (min-width: 600px) {
 .formForNewSpot{
